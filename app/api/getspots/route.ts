@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {getMidpoint} from '../../map-functions'
-
+import {getMidpoint, placesNearMidpoint, getLatLonFromPlaceId} from '../../map-functions'
 
 // FE - browser function to get current position or places API
 
@@ -22,9 +21,13 @@ export async function GET(request: NextRequest) {
   const point2 = searchParams.get('point2');
 
   const midpoint = getMidpoint(point1!,point2!)
-  
+
+  const places = await placesNearMidpoint(midpoint);
+
+
+  const temp = await getLatLonFromPlaceId(places);
+
   return NextResponse.json({
-    message: "Hello from the API",
-    request: requestUrl,
+    temp
   });
 }

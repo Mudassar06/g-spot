@@ -13,7 +13,7 @@ const MapBox = () => {
         const myMap = olaMaps.init({
             style: "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
             container: 'map',
-            center: [73.86358689028958, 18.502145917948187],
+            center: [73.9477269, 18.5492945],
             zoom: 15
         })
 

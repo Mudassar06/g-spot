@@ -1,3 +1,7 @@
+import { strict } from "assert";
+import axios from "axios";
+import { Wire_One } from "next/font/google";
+
 function toRadians(degrees:number) {
   return degrees * (Math.PI / 180);
 }
@@ -41,4 +45,63 @@ export function getMidpoint(point1:string,point2:string) {
   };
 }
 
-// const midpoint = getMidpoint(40.7128, -74.0060, 34.0522, -118.2437);
+export async function placesNearMidpoint(midpoint: {latitude: number, longitude: number}){
+  const location = `${midpoint.latitude},${midpoint.longitude}`;
+
+  try{
+    const response = await axios.get('https://api.olamaps.io/places/v1/nearbysearch', {
+      params: {
+        layers: 'venue',
+        types: 'movie_theater',
+        location: location,
+        // location: '18.531655170528808,73.8464479381058',
+        api_key: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,
+      },
+      // headers: {
+      //   'X-Request-Id': 
+      // }    
+    })
+    const predictions = response.data.predictions;
+
+    const extractedPlaces = predictions?.map((place:any)=> {
+      return {
+        description: place.description,
+        place_id: place.place_id
+      };
+    });
+    
+    // console.log(extractedPlaces);
+
+    return extractedPlaces;
+
+  } catch (error) {
+    console.log("\nError:", error)
+  }
+}
+
+type obj = {description:string, place_id: string};
+export async function getLatLonFromPlaceId(predArray: obj[]){
+
+  const withLatLon: { description: string; place_id: string; latlng: string }[] = [];
+
+  for (const element of predArray) {
+    try {
+      const response = await axios.get('https://api.olamaps.io/places/v1/details', {
+        params: {
+          place_id: element.place_id,
+          api_key: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,
+        },
+      });
+
+      const { lat, lng } = response.data?.result?.geometry?.location;
+      const latlng = `${lat},${lng}`;
+
+      withLatLon.push({ ...element, latlng });
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  }
+
+  console.log('ieihfiwhf', withLatLon);
+  return withLatLon;
+}
