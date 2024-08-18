@@ -25,9 +25,9 @@ export async function GET(request: NextRequest) {
   const places = await placesNearMidpoint(midpoint);
 
 
-  const temp = await getLatLonFromPlaceId(places);
+  const locationData = await getLatLonFromPlaceId(places);
 
   return NextResponse.json({
-    temp
+    locationData
   });
 }

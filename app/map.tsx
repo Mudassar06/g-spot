@@ -4,11 +4,11 @@ import {OlaMaps} from '../maps/olamaps-js-sdk.es'
 
 const MapBox = () => {
 
+    const olaMaps = new OlaMaps({
+        apiKey: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,
+    })
+
     useLayoutEffect(()=>{
-        
-        const olaMaps = new OlaMaps({
-            apiKey: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,
-        })
         
         const myMap = olaMaps.init({
             style: "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
