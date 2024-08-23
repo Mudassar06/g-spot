@@ -105,3 +105,17 @@ export async function getLatLonFromPlaceId(predArray: obj[]){
   console.log('ieihfiwhf', withLatLon);
   return withLatLon;
 }
+
+type RawData = { description: string; place_id: string; latlng: string }[];
+
+export function convertIntoFeatureCol(rawData: RawData) {
+    return rawData.map(item => {
+        const [lat, long] = item.latlng.split(',').map(parseFloat);
+        return {
+            geometry: {
+                type: 'Point',
+                coordinates: [long, lat], // Ensure coordinates are in [longitude, latitude] order
+            },
+        };
+    });
+}
