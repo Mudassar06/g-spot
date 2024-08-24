@@ -13,7 +13,7 @@ export const getAccessToken = async () => {
         })
       );
   
-      const accessToken = response.data.access_token;
+      const accessToken = response?.data.access_token;
       console.log('Access Token:', accessToken);
       
       return accessToken;
