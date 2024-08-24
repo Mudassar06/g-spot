@@ -49,7 +49,7 @@ export async function placesNearMidpoint(midpoint: {latitude: number, longitude:
   const location = `${midpoint.latitude},${midpoint.longitude}`;
 
   try{
-    const response = await axios.get('https://api.olamaps.io/places/v1/nearbysearch', {
+    const response:any = await axios.get('https://api.olamaps.io/places/v1/nearbysearch', {
       params: {
         layers: 'venue',
         types: 'movie_theater',
@@ -86,7 +86,7 @@ export async function getLatLonFromPlaceId(predArray: obj[]){
 
   for (const element of predArray) {
     try {
-      const response = await axios.get('https://api.olamaps.io/places/v1/details', {
+      const response:any = await axios.get('https://api.olamaps.io/places/v1/details', {
         params: {
           place_id: element.place_id,
           api_key: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,

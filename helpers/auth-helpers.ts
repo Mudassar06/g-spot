@@ -4,7 +4,7 @@ export const getAccessToken = async () => {
   
   try {
 
-      const response = await axios.post('https://account.olamaps.io/realms/olamaps/protocol/openid-connect/token',
+      const response:any = await axios.post('https://account.olamaps.io/realms/olamaps/protocol/openid-connect/token',
         new URLSearchParams({
           grant_type: 'client_credentials',
           scope: 'openid',
@@ -13,7 +13,7 @@ export const getAccessToken = async () => {
         })
       );
   
-      const accessToken = response?.data.access_token;
+      const accessToken = response.data.access_token;
       console.log('Access Token:', accessToken);
       
       return accessToken;
