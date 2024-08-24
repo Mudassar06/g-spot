@@ -11,10 +11,8 @@ function toDegrees(radians:number) {
 }
 
 function convertToLatLong(str:string) {
-  // Split the string by comma and convert to numbers
   const [lat, lon] = str.split(',').map(Number);
 
-  // Return the result as an object
   return { lat, lon };
 }
 
@@ -56,10 +54,7 @@ export async function placesNearMidpoint(midpoint: {latitude: number, longitude:
         location: location,
         // location: '18.531655170528808,73.8464479381058',
         api_key: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,
-      },
-      // headers: {
-      //   'X-Request-Id': 
-      // }    
+      },   
     })
     const predictions = response.data.predictions;
 
