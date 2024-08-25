@@ -78,6 +78,7 @@ type obj = {description:string, place_id: string};
 export async function getLatLonFromPlaceId(predArray: obj[]){
 
   const withLatLon: { description: string; place_id: string; latlng: string }[] = [];
+  if(predArray?.length > 0){
 
   for (const element of predArray) {
     try {
@@ -88,13 +89,15 @@ export async function getLatLonFromPlaceId(predArray: obj[]){
         },
       });
 
-      const { lat, lng } = response.data?.result?.geometry?.location;
-      const latlng = `${lat},${lng}`;
+      // const { lat, lng } = response.data?.result?.geometry?.location;
+      const latlng = response.data?.result?.geometry?.location;
 
       withLatLon.push({ ...element, latlng });
     } catch (error) {
       console.log('Error:', error);
     }
+  }
+
   }
 
   console.log('ieihfiwhf', withLatLon);
