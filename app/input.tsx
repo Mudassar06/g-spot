@@ -44,7 +44,7 @@ const InputDetails = ({searchPlaces,points,setPoints}:MyComponentProps) => {
 
     return (
     
-    <div className=' h-[300px]  absolute top-0 left-0 z-50'>
+    <div className=' h-[300px] bg-red-500  absolute top-0 left-0 z-50'>
         
         <div>
             <input onChange={handleChange} value={points.point1} type="text" name="point1" id = "" />
