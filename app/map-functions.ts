@@ -11,10 +11,8 @@ function toDegrees(radians:number) {
 }
 
 function convertToLatLong(str:string) {
-  // Split the string by comma and convert to numbers
   const [lat, lon] = str.split(',').map(Number);
 
-  // Return the result as an object
   return { lat, lon };
 }
 
@@ -49,17 +47,14 @@ export async function placesNearMidpoint(midpoint: {latitude: number, longitude:
   const location = `${midpoint.latitude},${midpoint.longitude}`;
 
   try{
-    const response = await axios.get('https://api.olamaps.io/places/v1/nearbysearch', {
+    const response:any = await axios.get('https://api.olamaps.io/places/v1/nearbysearch', {
       params: {
         layers: 'venue',
         types: 'movie_theater',
         location: location,
         // location: '18.531655170528808,73.8464479381058',
         api_key: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,
-      },
-      // headers: {
-      //   'X-Request-Id': 
-      // }    
+      },   
     })
     const predictions = response.data.predictions;
 
@@ -87,7 +82,7 @@ export async function getLatLonFromPlaceId(predArray: obj[]){
 
   for (const element of predArray) {
     try {
-      const response = await axios.get('https://api.olamaps.io/places/v1/details', {
+      const response:any = await axios.get('https://api.olamaps.io/places/v1/details', {
         params: {
           place_id: element.place_id,
           api_key: process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY!,
@@ -107,4 +102,18 @@ export async function getLatLonFromPlaceId(predArray: obj[]){
 
   console.log('ieihfiwhf', withLatLon);
   return withLatLon;
+}
+
+type RawData = { description: string; place_id: string; latlng: string }[];
+
+export function convertIntoFeatureCol(rawData: RawData) {
+    return rawData.map(item => {
+        const [lat, long] = item.latlng.split(',').map(parseFloat);
+        return {
+            geometry: {
+                type: 'Point',
+                coordinates: [long, lat], // Ensure coordinates are in [longitude, latitude] order
+            },
+        };
+    });
 }
