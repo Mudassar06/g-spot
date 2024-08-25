@@ -6,6 +6,7 @@ import { convertIntoFeatureCol } from '@/app/map-functions';
 import InputDetails from './input'
 import AutocompleteInput from './autocomplete';
 const MapBox = () => {
+    const [resList, setResList] = useState<any[]>([]);
     const [points,setPoints] = useState({point1:'',point2:''})
     const [featureCol, setFeatureCol] = useState<any[]>([]); 
     const myMapRef = useRef(null)
@@ -28,6 +29,7 @@ const MapBox = () => {
     const initializeMap = async (myMap:any) => {
         try {
             const raw = await fetchData();
+            setResList(raw);
             const features = convertIntoFeatureCol(raw);
             setFeatureCol(features);
 
@@ -101,7 +103,6 @@ const MapBox = () => {
             zoom: 15
         });
 
-
         return () => {
             
         };
@@ -112,6 +113,13 @@ const MapBox = () => {
             <InputDetails setPoints={setPoints} points={points} searchPlaces={searchPlaces}/>
             <AutocompleteInput setPoints={setPoints} points={points}/>
             <div id='myMap' style={{ height: '100vh', width: '100%' }}></div>
+            <div id='resList'>
+                {
+                    resList?resList.map((e)=>{
+                        return <li>{e?.description}</li>
+                    }):null
+                }
+            </div>
         </>
     );
 };
