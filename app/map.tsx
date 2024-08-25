@@ -1,4 +1,5 @@
 "use client";
+import {v4 as uuid} from 'uuid'
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { OlaMaps } from '../maps/olamaps-js-sdk.es';
 import axios from 'axios';
@@ -111,15 +112,14 @@ const MapBox = () => {
     return (
         <>
             <InputDetails setPoints={setPoints} points={points} searchPlaces={searchPlaces}/>
-            <AutocompleteInput setPoints={setPoints} points={points}/>
-            <div id='myMap' style={{ height: '100vh', width: '100%' }}></div>
-            <div id='resList'>
+            <div className='absolute right-4 top-4 w-1/2 p-2 flex flex-col gap-2 '>
                 {
-                    resList?resList.map((e)=>{
-                        return <li>{e?.description}</li>
+                    resList?resList.map((e,index)=>{
+                        return <li className='bg-white p-2' key={uuid()}>{e?.description}</li>
                     }):null
                 }
             </div>
+            <div id='myMap' style={{ height: '100vh', width: '100%' }}></div>
         </>
     );
 };

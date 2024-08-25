@@ -1,6 +1,6 @@
 import React, { useState, useCallback, Dispatch, SetStateAction } from 'react';
 import axios from 'axios';
-
+import {v4 as uuid} from 'uuid'
 interface AutocompleteResponse {
     description: string;
     geometry: {
@@ -87,17 +87,19 @@ const AutocompleteInput = ({ setPoints, points }: InputProps) => {
     return (
         <div>
             <input
+                className='p-2 rounded-md border border-neutral-500'
                 type="text"
                 value={inputValue}
                 onChange={handleInputChange}
                 placeholder="Type to search..."
             />
             {dropdownOpen && results.length > 0 && (
-                <ul>
+                <ul className='p-2 rounded-md border mt-2 flex flex-col gap-2'>
                     {results.map((result, index) => (
                         <li
+                            className='p-2 rounded-md bg-white border border-neutral-500 cursor-pointer' 
                             onClick={() => handleSelectResult(result)}
-                            key={index}
+                            key={uuid()}
                         >
                             {result.description}
                         </li>

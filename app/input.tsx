@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
+import AutocompleteInput from './autocomplete';
 interface MyComponentProps {
     searchPlaces: () => void;
     setPoints: Dispatch<SetStateAction<{ point1: string; point2: string; }>>;
@@ -44,19 +45,20 @@ const InputDetails = ({searchPlaces,points,setPoints}:MyComponentProps) => {
 
     return (
     
-    <div className=' h-[300px] bg-red-500  absolute top-0 left-0 z-50'>
+    <div className='flex flex-col gap-2 absolute top-4 left-4 z-50 p-2 rounded-md '>
         
         <div>
-            <input onChange={handleChange} value={points.point1} type="text" name="point1" id = "" />
-            <button onClick={currentLocation}>Current</button>
+            <input className='p-2 rounded-md border border-neutral-500' onChange={handleChange} value={points.point1} type="text" name="point1" id = "" />
+            <button className='ml-2 rounded-md p-2 px-4 bg-blue-600 text-white' onClick={currentLocation}>Current</button>
         </div>
 
         <div>
             {/* search */}
-            <input onChange={handleChange} value={points.point2} type="text" name="point2" id = "" />
+            <AutocompleteInput setPoints={setPoints} points={points}/>
+            <input className='hidden'  onChange={handleChange} value={points.point2} type="text" name="point2" id = "" />
         </div>
         
-        <button onClick={searchPlaces}>Search</button>
+        <button className='rounded-md p-2 px-4 bg-blue-600 w-full text-white' onClick={searchPlaces}>Search</button>
     
     </div>
 
