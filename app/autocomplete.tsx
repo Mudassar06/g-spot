@@ -50,20 +50,21 @@ const fetchAutocomplete = async (input: string): Promise<AutocompleteAPIResponse
     }
 };
 
-
 interface InputProps {
-    setPoints: Dispatch<SetStateAction<{ point1: string; point2: string; }>>;
-    
-    points:{point1:string,point2:string};
-  }
-  const AutocompleteInput = ({ setPoints, points }: InputProps) => {
+    setPoints: Dispatch<SetStateAction<{ point1: string; point2: string }>>;
+    points: { point1: string; point2: string };
+}
+
+const AutocompleteInput = ({ setPoints, points }: InputProps) => {
     const [inputValue, setInputValue] = useState<string>('');
     const [results, setResults] = useState<AutocompleteResponse[]>([]);
+    const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
     const debouncedFetchAutocomplete = useCallback(
         debounce(async (input: string) => {
             const data = await fetchAutocomplete(input);
             setResults(data.predictions);
+            setDropdownOpen(true); 
         }, 500),
         []
     );
@@ -74,6 +75,15 @@ interface InputProps {
         debouncedFetchAutocomplete(input);
     };
 
+    const handleSelectResult = (result: AutocompleteResponse) => {
+        setPoints({
+            ...points,
+            point2: `${result.geometry.location.lat},${result.geometry.location.lng}`,
+        });
+        setDropdownOpen(false);
+        setInputValue(result.description);
+    };
+
     return (
         <div>
             <input
@@ -82,21 +92,18 @@ interface InputProps {
                 onChange={handleInputChange}
                 placeholder="Type to search..."
             />
-            <ul>
-                {results.map((result, index) => (
-                    <li
-                        onClick={() => {
-                            setPoints({
-                                ...points,
-                                point2: `${result.geometry.location.lat},${result.geometry.location.lng}`,
-                            });
-                        }}
-                        key={index}
-                    >
-                        {result.description}
-                    </li>
-                ))}
-            </ul>
+            {dropdownOpen && results.length > 0 && (
+                <ul>
+                    {results.map((result, index) => (
+                        <li
+                            onClick={() => handleSelectResult(result)}
+                            key={index}
+                        >
+                            {result.description}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
